@@ -2,9 +2,12 @@ package robots
 
 import (
 	"math/rand"
+
+	"github.com/lucascprazeres/video-maker/logging"
 )
 
 func Image() {
+	logging.Info("[image-robot] Starting...\n")
 	state := LoadState()
 
 	fetchImagesOfAllSentences(state)
@@ -13,6 +16,8 @@ func Image() {
 }
 
 func fetchImagesOfAllSentences(state *State) {
+	logging.Info("[image-robot] Fetching images from Google Images\n")
+
 	for i := 0; i < len(state.Sentences); i++ {
 		var query string
 

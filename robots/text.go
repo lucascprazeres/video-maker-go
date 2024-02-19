@@ -4,11 +4,14 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/lucascprazeres/video-maker/logging"
 	"github.com/neurosnap/sentences/english"
 	gowiki "github.com/trietmn/go-wiki"
 )
 
 func Text() {
+	logging.Info("[text-robot] Starting...\n")
+
 	state := LoadState()
 
 	fetchContentFromWikipedia(state)
@@ -23,6 +26,8 @@ func Text() {
 func fetchContentFromWikipedia(state *State) {
 	search := (state.Prefix) + " " + state.SearchTerm
 
+	logging.Info("[text-robot] Fetching '%v' on wikipedia\n", search)
+
 	page, err := gowiki.GetPage(search, -1, false, true)
 
 	if err != nil {
@@ -35,6 +40,7 @@ func fetchContentFromWikipedia(state *State) {
 	}
 
 	state.SourceContentOriginal = content
+	logging.Info("[text-robot] Fetching done!\n")
 }
 
 func sanitizeContent(state *State) {
@@ -76,6 +82,8 @@ func limitMaximumSentences(state *State) {
 }
 
 func fetchKeywordsOffAllSentences(state *State) {
+	logging.Info("[text-robot] Extracting keywords from content\n")
+
 	tokenizer, err := english.NewSentenceTokenizer(nil)
 	if err != nil {
 		panic(err)
